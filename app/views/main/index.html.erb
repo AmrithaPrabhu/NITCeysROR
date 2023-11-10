@@ -1,0 +1,59 @@
+
+<div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-6">
+                    <div class="card">
+                    <% if flash[:error] %>
+                    <div class="alert alert-danger text-center"role="alert">
+                    <%= flash[:error] %>
+                    </div>
+                    <% end %>
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#student-tab" data-toggle="tab">Student</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#teacher-tab" data-toggle="tab">Teacher</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#admin-tab" data-toggle="tab">Admin</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="student-tab">
+                                
+                            </div>
+                            <div class="tab-pane fade" id="teacher-tab">
+                                <!-- Teacher login form similar to student form -->
+                            </div>
+                            <div class="tab-pane fade  show active" id="admin-tab">
+                                <%= form_with model: @admin, url: login_path do |form| %>
+                                    <div class="form-group">
+                                        <%= form.label :username %>
+
+                                        <%= form.text_field :admin_id, class: "form-control", placeholder: "Enter username" %>
+                                    </div>
+                                    <div class="form-group">
+                                        <%= form.label :password %>
+
+                                        <%= form.password_field :password ,class:"form-control", placeholder: "Enter password" %>
+                                    </div>
+
+                                    <%= form.submit "Login", class: "btn btn-primary" %>
+
+                                <%end%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery script links here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
