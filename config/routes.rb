@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get "/dashboard", to: "main#dash"
   post "/book", to: "main#book"
   get "/bookHall", to: "main#booking"
+  post "/bookHall", to: "main#checkBooking"
 end

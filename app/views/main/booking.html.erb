@@ -2,10 +2,15 @@
             <main class="col-md-1 ms-sm-auto col-lg-1 justify-content-center main">
                 <!-- Change Password Form Inside Card -->
                 <div class="card mt-1 justify-content-center" style="width:fit-content;margin-left:30%;">
+                    <% if flash[:error] %>
+                        <div class="alert alert-danger text-center"role="alert">
+                        <%= flash[:error] %>
+                        </div>
+                    <% end %>
                     <div class="card-body text-center" style="width:min-content;">
                         <h2 class="card-title">Book Hall</h2>
                         <!-- Add a form here for changing the password -->
-                        <form action="/book" method="post">
+                        <%= form_with model: @hallbooking, url: bookHall_path, html: { style: "width: max-content;" } do |form| %>
                             <% if @name %>
                             <h5>Booking for Hall: <%= @name %></h5>
                             <% end %>
@@ -16,28 +21,29 @@
                             
                             <br>
                             <div class="form-group text-left">
-                                <label for="new-password">Date</label><span style="color:red;">*</span>
-                                <input type="Date" class="form-control" id="new-password" name ="date" required>
+                                
+                                <%= form.label :date, "Date<span class='required' style='color:red;'>*</span>".html_safe %>
+                                <%= form.date_field :date_, class: "form-control", required: true %>
+                                </div>
+                            <br>
+                            <div class="form-group text-left">
+                                <%= form.label :StartTime, "Start Time<span class='required' style='color:red;'>*</span>".html_safe %>
+                                <%= form.time_field :start_time, class: "form-control", required: true %>
                             </div>
                             <br>
                             <div class="form-group text-left">
-                                <label for="confirm-new-password">Start Time</label><span style="color:red;">*</span>
-                                <input type="time" class="form-control" id="confirm-new-password" name="startTime" required>
+                            <%= form.label :EndTime, "End Time<span class='required' style='color:red;'>*</span>".html_safe %>
+                            <%= form.time_field :end_time, class: "form-control", required: true%>
                             </div>
                             <br>
                             <div class="form-group text-left">
-                                <label for="confirm-new-password">End Time</label><span style="color:red;">*</span>
-                                <input type="time" class="form-control" id="confirm-new-password" name="endTime" required>
-                            </div>
-                            <br>
-                            <div class="form-group text-left">
-                                <label for="confirm-new-password" >Reason</label><span style="color:red;">*</span>
+                                <%= form.label :reason, "Reason<span class='required' style='color:red;'>*</span>".html_safe %>
                                 <br>
-                                <textarea name="reason" id="" cols="56" rows="3" required></textarea>
+                                <%= text_area_tag 'reason', nil, cols: 56, rows: 3, class: 'form-control', required: true %>
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary">Request</button>
-                        </form>
+                            <%= form.submit "Request", class: "btn btn-primary" %>
+                        <%end%>
                     </div>
                 </div>
             </main>
