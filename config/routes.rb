@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   get "/"  , to: "main#index"
   post "/login", to:  "main#valid"
   get "/dashboard", to: "main#dash"
+  post "/book", to: "main#book"
+  get "/bookHall", to: "main#booking"
 end
