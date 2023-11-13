@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema[7.1].define(version: 2023_11_13_110643) do
   create_table "admins", force: :cascade do |t|
-    t.string "admin_id", null: false
+    t.string "admin_id"
     t.string "name"
     t.string "password"
     t.datetime "created_at", null: false

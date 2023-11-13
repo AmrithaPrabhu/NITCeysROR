@@ -47,15 +47,34 @@
                                                 <%= form.submit "Book Hall", class: "btn btn-primary" %>
                                             <% end %>
                                             </li>
-                                           
-                                          <% end %>
+                                        <% end %>
                                         </ul>
                                     </div>
+
                                     <div class="tab-pane fade" id="pending-requests">
                                         <ul class="list-group">
-                                            {{RequestItems}}
+                                        <% @hallbookings.each do |hallbookings| %>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Booked By: <%= hallbookings.name %><br>
+                                            Hall Name: <%= hallbookings.hall_name %><br>
+                                            Date: <%= hallbookings.date_ %><br>
+                                            From: <%= hallbookings.start_time.strftime('%H:%M:%S') %><br>
+                                            To: <%= hallbookings.end_time.strftime('%H:%M:%S') %><br>
+                                            Reason: <%= hallbookings.reason %><br>
+                                            <%= form_with(model: @hallbookings, url:pending_path, method: 'post') do |form| %>
+                                                <%= form.hidden_field :hall_id, value: hallbookings.hall_id %>
+                                                <%= form.hidden_field :admin_id, value: hallbookings.admin_id %>
+                                                <%= form.hidden_field :start_time, value: hallbookings.start_time %>
+                                                <%= form.hidden_field :end_time, value: hallbookings.end_time %>
+                                                <%= form.hidden_field :date_, value: hallbookings.date_ %>
+                                                <%= form.submit "Approve", name: "commit_action", value: "Approve", class: "btn btn-primary" %>
+                                                <%= form.submit "Reject", name: "commit_action", value: "Reject", class: "btn btn-primary" %>
+                                            <% end %>
+                                            </li>
+                                        <% end %>
                                         </ul>
                                     </div>
+<<<<<<< HEAD
                                     <div class="tab-pane fade show active" id="view-keyholders">
                                     <ul class="list-group">
                                       <% @keyholders.each do |keyholder| %>
@@ -68,6 +87,14 @@
                                     </ul>
                                   </div>
                                   
+=======
+
+                                    <div class="tab-pane fade" id="view-keyholders">
+                                        <ul style="list-style-type: none; padding: 0;">
+                                            {{listItems}}
+                                        </ul>
+                                    </div>
+>>>>>>> c03dc5e810182a7cea33dceedae95fe98a1a2d73
                                     <div class="tab-pane fade" id="verify-keys">
                                         <ul style="list-style-type: none; padding: 0;">
                                             {{ReturnedKeys}}

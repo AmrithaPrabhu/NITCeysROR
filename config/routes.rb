@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   post "/book", to: "main#book"
   get "/bookHall", to: "main#booking"
   post "/bookHall", to: "main#checkBooking"
+  post "/pending", to: "main#apprej"
 end
