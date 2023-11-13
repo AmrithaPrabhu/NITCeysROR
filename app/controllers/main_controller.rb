@@ -17,6 +17,79 @@ class MainController < ApplicationController
     
     def dash
         @halls = Hall.all
+        
+        query5="SELECT * FROM hallbookings, admins, halls WHERE hallbookings.admin_id = admins.admin_id AND hallbookings.hall_id = halls.hall_id AND hallbookings.is_approved = 0"
+        @hallbookings=Hallbooking.find_by_sql(query5)
+    end
+
+    def apprej
+
+        if params[:commit_action] == "Approve"
+
+            booking_to_update=Hallbooking.find_by(hall_id: params[:hallbooking]["hall_id"], 
+                                            admin_id: params[:hallbooking]["admin_id"], 
+                                            start_time: params[:hallbooking]["start_time"],
+                                            end_time: params[:hallbooking]["end_time"],
+                                            is_approved: 0)
+
+            error_flag=0
+            # @bookings_to_check=Hallbooking.find_by(hall_id: params[:hallbooking]["hall_id"], date_: params[:hallbooking]["date_"], is_approved: 1)
+            query7 = "SELECT * FROM hallbookings where hall_id = ? and date_ = ? and is_approved = 1"
+            @bookings_to_check = Hallbooking.find_by_sql([query7,params[:hallbooking]["hall_id"],params[:hallbooking]["date_"]])
+            # @bookings_to_check = Array(@bookings_to_check) 
+            # puts (@bookings_to_check)
+            if @bookings_to_check
+                @bookings_to_check.each do |booking|
+                    puts "########PPPPRKLGJQERYJE%YJ%!!!!!!!!!!!!!!!!!!!"
+                    # puts (booking.start_time <= booking_to_update.start_time)
+                    puts (booking.start_time <= booking_to_update.start_time )
+                    puts (booking.end_time >= booking_to_update.end_time)
+                    puts (booking.end_time)
+                    puts (booking_to_update.end_time)
+                    if (
+                        (booking.start_time <= booking_to_update.start_time && booking.end_time >= booking_to_update.start_time) || 
+                        (booking.start_time <= booking_to_update.end_time && booking.end_time >= booking_to_update.end_time) || 
+                        (booking.start_time >= booking_to_update.start_time && booking.end_time <= booking_to_update.end_time) ||
+                        (booking.start_time <= booking_to_update.start_time && booking.end_time >= booking_to_update.end_time)
+                        ) 
+                            error_flag=1
+                    end
+                end
+            end
+
+            if(error_flag == 0)
+                if booking_to_update.update(is_approved: 1)
+                    flash[:success] = "Approval Successful"
+                    redirect_to dashboard_path
+                else
+                    flash[:error] = "Approval Failed"
+                    redirect_to dashboard_path
+                end
+            else
+                if booking_to_update.destroy
+                    flash[:error] = "Deleted Due to Clash"
+                    redirect_to dashboard_path
+                else
+                    flash[:error] = 'Failed to delete the record regardless or clash: db error.'
+                    redirect_to dashboard_path
+                end
+            end
+            
+        elsif params[:commit_action] == "Reject"
+            booking_to_delete=Hallbooking.find_by(hall_id: params[:hallbooking]["hall_id"], 
+                                        admin_id: params[:hallbooking]["admin_id"], 
+                                        start_time: params[:hallbooking]["start_time"],
+                                        end_time: params[:hallbooking]["end_time"],
+                                        is_approved: 0)
+            if booking_to_delete.destroy
+                flash[:success] = 'Record was successfully deleted.'
+                redirect_to dashboard_path
+            else
+                flash[:error] = 'Failed to delete the record.'
+                redirect_to dashboard_path
+            end
+        end
+
     end
 
     def book
@@ -34,7 +107,7 @@ class MainController < ApplicationController
         @id = session[:hall_id]
         @loc = session[:location]
         @obj = session[:hall]
-    end
+    end 
 
     def checkBooking
         @bookingDetails = Hallbooking.find_by(date_: params[:date_], start_time: params[:start_time], end_time: params[:end_time], hall_id: session[:hall_id])
@@ -49,7 +122,7 @@ class MainController < ApplicationController
                 redirect_to bookHall_path
                 return
             end
-            if Date.parse(params[:date_]) == @today && params[:start_time] < params[:end_time]
+            if Date.parse(params[:date_]) == @today && params[:start_time] > params[:end_time]
                 flash[:error] = "Invalid timings."
                 redirect_to bookHall_path
                 return
@@ -66,21 +139,21 @@ class MainController < ApplicationController
                 return
             else
                 query2 = "select * from hallbookings where date_ = ? and start_time < ? and end_time > ? and hall_id = ? and is_approved = 1";
-                results2 = Hallbooking.find_by_sql([query2,Date.parse(params[:date_]),params[:start_time],params[:end_time],session[:hall_id]])
+                results2 = Hallbooking.find_by_sql([query2,params[:date_],params[:start_time],params[:end_time],session[:hall_id]])
                 if results2.present?
                     flash[:error] = "Hall is busy. Please choose another slot."
                     redirect_to bookHall_path
                     return
                 else
                     query3 = "select * from hallbookings where date_ = ? and start_time < ? and end_time > ? and hall_id = ? and is_approved = 1";
-                    results3 = Hallbooking.find_by_sql([query3,Date.parse(params[:date_]),params[:start_time],params[:end_time],session[:hall_id]])
+                    results3 = Hallbooking.find_by_sql([query3,params[:date_],params[:start_time],params[:end_time],session[:hall_id]])
                     if results3.present?
                         flash[:error] = "Hall is busy. Please choose another slot."
                         redirect_to bookHall_path
                         return
                     else
                         query4 = "select * from hallbookings where date_ = ? and start_time > ? and end_time < ? and hall_id = ? and is_approved = 1";
-                        results4 = Hallbooking.find_by_sql([query4,Date.parse(params[:date_]),params[:start_time], params[:end_time], session[:hall_id]])
+                        results4 = Hallbooking.find_by_sql([query4,params[:date_],params[:start_time], params[:end_time], session[:hall_id]])
                         if results4.present?
                             flash[:error] = "Hall is busy. Please choose another slot."
                             redirect_to bookHall_path

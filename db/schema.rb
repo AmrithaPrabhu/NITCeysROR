@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema[7.1].define(version: 2023_11_11_174814) do
   create_table "admins", force: :cascade do |t|
-    t.string "admin_id", null: false
+    t.string "admin_id"
     t.string "name"
     t.string "password"
     t.datetime "created_at", null: false
@@ -20,13 +20,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_11_174814) do
   end
 
   create_table "hallbookings", force: :cascade do |t|
-    t.date "date_", null: false
-    t.time "start_time", null: false
-    t.time "end_time", null: false
-    t.string "hall_id", null: false
-    t.string "admin_id", null: false
-    t.integer "is_approved", null: false
-    t.string "reason", null: false
+    t.date "date_"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "hall_id"
+    t.string "admin_id"
+    t.integer "is_approved"
+    t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
