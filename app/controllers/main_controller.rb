@@ -123,7 +123,7 @@ class MainController < ApplicationController
     end 
 
     def checkBooking
-        @bookingDetails = Hallbooking.find_by(date_: params[:date_], start_time: params[:start_time], end_time: params[:end_time], hall_id: session[:hall_id])
+        @bookingDetails = Hallbooking.find_by(date_: params[:date_], start_time: params[:start_time], end_time: params[:end_time], hall_id: session[:hall_id],is_approved:1)
         if @bookingDetails
             flash[:error] = "Hall Occupied"
             redirect_to bookHall_path
@@ -151,21 +151,21 @@ class MainController < ApplicationController
                 redirect_to bookHall_path
                 return
             else
-                query2 = "select * from hallbookings where date_ = ? and start_time < ? and end_time > ? and hall_id = ? and is_approved = 1";
-                results2 = Hallbooking.find_by_sql([query2,params[:date_],params[:start_time],params[:end_time],session[:hall_id]])
+                query2 = "select * from hallbookings where date_ = ? and strftime('%H:%M', start_time) < ? and strftime('%H:%M', end_time) > ? and hall_id = ? and is_approved = 1";
+                results2 = Hallbooking.find_by_sql([query2,params[:date_],params[:start_time],params[:start_time],session[:hall_id]])
                 if results2.present?
                     flash[:error] = "Hall is busy. Please choose another slot."
                     redirect_to bookHall_path
                     return
                 else
-                    query3 = "select * from hallbookings where date_ = ? and start_time < ? and end_time > ? and hall_id = ? and is_approved = 1";
-                    results3 = Hallbooking.find_by_sql([query3,params[:date_],params[:start_time],params[:end_time],session[:hall_id]])
+                    query3 = "select * from hallbookings where date_ = ? and strftime('%H:%M', start_time) < ? and strftime('%H:%M', end_time) > ? and hall_id = ? and is_approved = 1";
+                    results3 = Hallbooking.find_by_sql([query3,params[:date_],params[:end_time],params[:end_time],session[:hall_id]])
                     if results3.present?
                         flash[:error] = "Hall is busy. Please choose another slot."
                         redirect_to bookHall_path
                         return
                     else
-                        query4 = "select * from hallbookings where date_ = ? and start_time > ? and end_time < ? and hall_id = ? and is_approved = 1";
+                        query4 = "select * from hallbookings where date_ = ? and strftime('%H:%M', start_time) > ? and strftime('%H:%M', end_time) < ? and hall_id = ? and is_approved = 1";
                         results4 = Hallbooking.find_by_sql([query4,params[:date_],params[:start_time], params[:end_time], session[:hall_id]])
                         if results4.present?
                             flash[:error] = "Hall is busy. Please choose another slot."
