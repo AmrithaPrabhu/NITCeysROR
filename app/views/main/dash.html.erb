@@ -56,11 +56,18 @@
                                             {{RequestItems}}
                                         </ul>
                                     </div>
-                                    <div class="tab-pane fade" id="view-keyholders">
-                                        <ul style="list-style-type: none; padding: 0;">
-                                            {{listItems}}
-                                        </ul>
-                                    </div>
+                                    <div class="tab-pane fade show active" id="view-keyholders">
+                                    <ul class="list-group">
+                                      <% @keyholders.each do |keyholder| %>
+                                        <li class="list-group-item">
+                                          <strong>Name:</strong> <%= keyholder.user_name %><br>
+                                          <strong>Location:</strong> <%= keyholder.building %> <%= keyholder.room_number %><br>
+                                          <strong>Phone Number:</strong> <%= keyholder.user_phone_number %>
+                                        </li>
+                                      <% end %>
+                                    </ul>
+                                  </div>
+                                  
                                     <div class="tab-pane fade" id="verify-keys">
                                         <ul style="list-style-type: none; padding: 0;">
                                             {{ReturnedKeys}}

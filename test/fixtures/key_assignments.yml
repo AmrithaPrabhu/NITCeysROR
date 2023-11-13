@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2023-11-13 13:43:23
+  taking_time: 2023-11-13 13:43:23
+  user_id: MyString
+  room_id: MyString
+  box_key: 1
+  is_returned: false
+
+two:
+  date: 2023-11-13 13:43:23
+  taking_time: 2023-11-13 13:43:23
+  user_id: MyString
+  room_id: MyString
+  box_key: 1
+  is_returned: false

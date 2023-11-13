@@ -1,0 +1,2 @@
+class KeyAssignment < ApplicationRecord
+end

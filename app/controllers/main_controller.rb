@@ -17,8 +17,21 @@ class MainController < ApplicationController
     
     def dash
         @halls = Hall.all
-    end
 
+        @keyholders = User.joins(
+            "INNER JOIN key_assignments ON users.user_id = key_assignments.user_id " \
+            "INNER JOIN classrooms ON key_assignments.room_id = classrooms.room_id"
+            )
+            .where(key_assignments: { is_returned: false })
+            .select(
+            'users.name AS user_name',
+            'users.phone_number AS user_phone_number',
+            'classrooms.room_no AS room_number',
+            'classrooms.building AS building'
+            )
+            .distinct
+
+    end
     def book
         @hallName = Hall.find_by(hall_id: params[:hall_id])
         if @hallName

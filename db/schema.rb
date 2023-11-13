@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_11_174814) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_13_110643) do
   create_table "admins", force: :cascade do |t|
     t.string "admin_id", null: false
     t.string "name"
@@ -19,14 +19,21 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_11_174814) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "classrooms", force: :cascade do |t|
+    t.string "room_id"
+    t.string "building"
+    t.integer "room_no"
+    t.boolean "is_available"
+  end
+
   create_table "hallbookings", force: :cascade do |t|
-    t.date "date_", null: false
-    t.time "start_time", null: false
-    t.time "end_time", null: false
-    t.string "hall_id", null: false
-    t.string "admin_id", null: false
-    t.integer "is_approved", null: false
-    t.string "reason", null: false
+    t.date "date_"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "hall_id"
+    t.string "admin_id"
+    t.integer "is_approved"
+    t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,6 +44,24 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_11_174814) do
     t.string "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "key_assignments", force: :cascade do |t|
+    t.datetime "date"
+    t.time "taking_time"
+    t.string "user_id"
+    t.string "room_id"
+    t.integer "box_key"
+    t.boolean "is_returned"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "department"
+    t.string "phone_number"
+    t.string "password"
+    t.string "role"
+    t.string "user_id"
   end
 
 end
