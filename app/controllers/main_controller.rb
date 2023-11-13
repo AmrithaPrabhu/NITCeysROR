@@ -17,11 +17,22 @@ class MainController < ApplicationController
     
     def dash
         @halls = Hall.all
-<<<<<<< HEAD
-=======
-        
+
         query5="SELECT * FROM hallbookings, admins, halls WHERE hallbookings.admin_id = admins.admin_id AND hallbookings.hall_id = halls.hall_id AND hallbookings.is_approved = 0"
         @hallbookings=Hallbooking.find_by_sql(query5)
+
+        @keyholders = User.joins(
+            "INNER JOIN key_assignments ON users.user_id = key_assignments.user_id " \
+            "INNER JOIN classrooms ON key_assignments.room_id = classrooms.room_id"
+            )
+            .where(key_assignments: { is_returned: false })
+            .select(
+            'users.name AS user_name',
+            'users.phone_number AS user_phone_number',
+            'classrooms.room_no AS room_number',
+            'classrooms.building AS building'
+            )
+            .distinct
     end
 
     def apprej
@@ -93,22 +104,7 @@ class MainController < ApplicationController
         end
 
     end
->>>>>>> c03dc5e810182a7cea33dceedae95fe98a1a2d73
-
-        @keyholders = User.joins(
-            "INNER JOIN key_assignments ON users.user_id = key_assignments.user_id " \
-            "INNER JOIN classrooms ON key_assignments.room_id = classrooms.room_id"
-            )
-            .where(key_assignments: { is_returned: false })
-            .select(
-            'users.name AS user_name',
-            'users.phone_number AS user_phone_number',
-            'classrooms.room_no AS room_number',
-            'classrooms.building AS building'
-            )
-            .distinct
-
-    end
+    
     def book
         @hallName = Hall.find_by(hall_id: params[:hall_id])
         if @hallName

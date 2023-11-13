@@ -1,5 +1,5 @@
 <div class="main">
-            <main class="col-md-1 ms-sm-auto col-lg-1 justify-content-center main">
+            <main class="col-md-1 ms-sm-auto col-lg-1 justify-content-center main" style="margin-left:30%;">
                 <!-- Change Password Form Inside Card -->
                 <div class="card mt-1 justify-content-center" style="width:fit-content;margin-left:30%;">
                     <% if flash[:error] %>
@@ -7,7 +7,7 @@
                         <%= flash[:error] %>
                         </div>
                     <% end %>
-                    <div class="card-body text-center" style="width:min-content;">
+                    <div class="card-body align-items-center justify-content-center text-center" style="width:min-content; margin-left:auto;">
                         <h2 class="card-title">Book Hall</h2>
                         <!-- Add a form here for changing the password -->
                         <%= form_with model: @hallbooking, url: bookHall_path, html: { style: "width: max-content;" } do |form| %>
